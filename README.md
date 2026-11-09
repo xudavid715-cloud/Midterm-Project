@@ -1,40 +1,48 @@
-# Midterm-Project
-# ECON 3916 Midterm Project: Education and Wages
+The Return to Schooling for Working Married Women, 1975
 
-## Research Question
-This project examines the relationship between education and hourly wages among married white women who worked in the United States in 1975.
+ECON 3916 · Applied Data Analytics · Midterm Project
 
-Specifically, it investigates how one additional year of schooling is associated with hourly wages, controlling for work experience, children under six, and mother's education.
+Question
 
-## Data Source
-The dataset comes from the Panel Study of Income Dynamics (PSID), originally analyzed by Mroz (1987).
+Among married white women in the U.S. who worked for pay in 1975, how much higher is the hourly wage associated with one more year of schooling, holding labor-market experience and mother's years of schooling constant?
 
-- Dataset: `mroz`
-- Source: Wooldridge Python Package
-- Original observations: 753
-- Regression observations: 428
+The outcome is the log hourly wage, so the schooling coefficient reads as a percent difference in wages.
 
-Source: https://pypi.org/project/wooldridge/
+Data source
+Dataset: mroz, from the wooldridge Python package (downloaded 2026-10-26).
+Original source: Mroz, T. (1987), "The Sensitivity of an Empirical Model of Married Women's Hours of Work to Economic and Statistical Assumptions," Econometrica 55(4): 765–799. The data are drawn from the Panel Study of Income Dynamics (PSID), University of Michigan.
+Sample: 753 married white women aged 30–60, observed for calendar year 1975. The regression uses the 428 women who worked for pay, because a wage exists only for women with a job.
+Missing data: The wage is missing for the 325 women who did not work. I treat this as a sample-selection problem rather than imputing the missing wages (see Section 1 of the notebook).
 
-## Methodology
-The analysis uses:
-- Descriptive statistics and visualizations.
-- OLS regression with HC1 robust standard errors.
-- Residual analysis and Breusch–Pagan testing.
-- VIF and Cook's distance diagnostics.
+The notebook saves a copy of the data to data/mroz.csv the first time it runs and reads that file on later runs.
 
-## Main Finding
-One additional year of schooling is associated with approximately **12.6% higher hourly wages**, holding other factors constant.
+Repository contents
+File	What it is
+Midterm Project/Econ_3916_Midterm.ipynb	The full analysis: data, figures, regressions, diagnostics, and the numbers quoted in the report
+Midterm Project/ (PDF)	The written report
+data/mroz.csv	The dataset as used, saved by the notebook
+README.md	This file
+How to run it
 
-This is a conditional association, not necessarily a causal effect, due to potential omitted variable bias and selection into employment.
+In Google Colab (recommended)
 
-## How to Run
-1. Open `Econ_3916_Midterm.ipynb` in Google Colab or Jupyter Notebook.
-2. Install the required packages using the notebook's setup cell.
-3. Ensure `data/mroz.csv` is available, or allow the notebook to download it.
-4. Run all cells from beginning to end.
+Open Midterm Project/Econ_3916_Midterm.ipynb from this repository in Colab (File › Open notebook › GitHub).
+Choose Runtime › Run all.
 
-## References
-Mroz, T. A. (1987). *Econometrica*, 55(4), 765–799.
+The first cell installs the wooldridge package, so nothing else needs to be set up. The whole notebook runs in under a minute.
 
-Wooldridge Python Package: https://pypi.org/project/wooldridge/
+Locally
+
+bash
+pip install wooldridge numpy pandas matplotlib statsmodels scipy jupyter
+jupyter notebook "Midterm Project/Econ_3916_Midterm.ipynb"
+
+Then run all cells from top to bottom. Every number quoted in the report is printed by the final Numbers my report quotes cell.
+
+Headline finding
+
+Among married white women who worked in 1975, one more year of schooling is associated with about 12.5% higher hourly wages, holding mother's schooling and work experience constant (OLS with robust standard errors; the 95% confidence interval lies well above zero). Four extra years of schooling, roughly a college degree compared with a high-school diploma, is associated with about 60% higher wages.
+
+The estimate barely changes when work experience is left out, when the number of young children is added, or when influential observations are dropped.
+
+This is a conditional association, not a causal effect. Women with more schooling may also have more ability or motivation, which would push the estimate up. Because wages are observed only for women who chose to work, selection into employment could bias the estimate in either direction. The result describes working married women in 1975, not all married women.
